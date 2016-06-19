@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Web.Security;
 using System.Xml;
+using System.Diagnostics;
 
 namespace weixin_api
 {
@@ -15,7 +16,9 @@ namespace weixin_api
     {
         public void ProcessRequest(HttpContext param_context)
         {
+
             string postString = string.Empty;
+
             if (HttpContext.Current.Request.HttpMethod.ToUpper() == "POST")
             {
                 using (Stream stream = HttpContext.Current.Request.InputStream)
@@ -26,6 +29,12 @@ namespace weixin_api
                     Handle(postString);
                 }
             }
+            else
+            {
+                Trace.TraceError("InterfaceTest");
+                InterfaceTest();
+            }
+
         }
 
         /// <summary>
@@ -43,7 +52,7 @@ namespace weixin_api
         //成为开发者url测试，返回echoStr
         public void InterfaceTest()
         {
-            string token = "填写的token";
+            string token = "myironmanaccess";
             if (string.IsNullOrEmpty(token))
             {
                 return;
