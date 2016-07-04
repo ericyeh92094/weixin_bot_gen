@@ -47,9 +47,14 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -81,13 +86,12 @@
   <ItemGroup>
     <Compile Include="createMenu.aspx.cs">
       <DependentUpon>createMenu.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="createMenu.aspx.designer.cs">
       <DependentUpon>createMenu.aspx</DependentUpon>
     </Compile>
-    <Compile Include="interfaceTest.ashx.cs">
-      <DependentUpon>interfaceTest.ashx</DependentUpon>
+    <Compile Include="interfaceHandler.ashx.cs">
+      <DependentUpon>interfaceHandler.ashx</DependentUpon>
     </Compile>
     <Compile Include="messageHelp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,10 +107,14 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="interfaceTest.ashx" />
+    <Content Include="interfaceHandler.ashx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\ironmanservice - Web Deploy.pubxml" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

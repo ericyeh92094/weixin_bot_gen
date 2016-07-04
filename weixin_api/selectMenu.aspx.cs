@@ -23,6 +23,8 @@ namespace weixin_api
             GetPage("https://api.weixin.qq.com/cgi-bin/menu/get?access_token=access_token");
             //GetPage("https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=access_token");
         }
+
+
         public string GetPage(string posturl)
         {
             Stream instream = null;

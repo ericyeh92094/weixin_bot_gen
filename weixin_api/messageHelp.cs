@@ -18,7 +18,7 @@ namespace weixin_api
         {
             string responseContent = "";
             XmlDocument xmldoc = new XmlDocument();
-            xmldoc.Load(new System.IO.MemoryStream(System.Text.Encoding.GetEncoding("GB2312").GetBytes(postStr)));
+            xmldoc.Load(new System.IO.MemoryStream(System.Text.Encoding.GetEncoding("UTF-8").GetBytes(postStr)));
             XmlNode MsgType = xmldoc.SelectSingleNode("/xml/MsgType");
             if (MsgType!=null)
             {

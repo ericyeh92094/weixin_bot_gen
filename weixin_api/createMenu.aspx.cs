@@ -13,9 +13,58 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using System.Net;
+using System.Runtime.Serialization.Json;
 
 namespace weixin_api
 {
+    public class GetAccessToken
+    {
+        static public string myToekn = "";
+        static public string myappid = "wx6e4b63cba932bca8";
+        static public string mysecret = "a1370e570a4db84b807c4488b99d964b";
+        static public wechat_access_token myaccesstoken;
+
+        public class wechat_access_token
+        {
+            public string access_token { get; set; }
+            public int expires_in { get; set; }
+        }
+
+        public static string RetriveAccessToken()
+        {
+            string requestUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + myappid + "&secret=" + mysecret;
+            Stream instream = null;
+            StreamReader sr = null;
+            HttpWebResponse response = null;
+            HttpWebRequest request = null;
+            Encoding encoding = Encoding.UTF8;
+            // 准备请求...
+            try
+            {
+                // 设置参数
+                request = WebRequest.Create(requestUrl) as HttpWebRequest;
+                CookieContainer cookieContainer = new CookieContainer();
+                request.CookieContainer = cookieContainer;
+                request.AllowAutoRedirect = true;
+                request.Method = "GET";
+                request.ContentType = "application/x-www-form-urlencoded";
+                response = request.GetResponse() as HttpWebResponse;
+                //直到request.GetResponse()程序才开始向目标网页发送Post请求
+                instream = response.GetResponseStream();
+
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(wechat_access_token));
+                myaccesstoken = (wechat_access_token)serializer.ReadObject(instream);
+
+                return myaccesstoken.access_token;
+            }
+            catch (Exception ex)
+            {
+                string err = ex.Message;
+                return string.Empty;
+            }
+        }
+    }
+
     public partial class createMenu : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
@@ -25,7 +74,11 @@ namespace weixin_api
             string menu = sr.ReadToEnd();
             sr.Close();
             fs1.Close();
-            GetPage("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=access_token", menu);
+            string token = GetAccessToken.RetriveAccessToken();
+
+            https://api.weixin.qq.com/cgi-bin/menu/create?access_token=
+            string posturl = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + token;
+            GetPage(posturl, menu);
         }
         public string GetPage(string posturl, string postData)
         {
