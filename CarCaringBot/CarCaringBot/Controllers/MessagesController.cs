@@ -68,9 +68,15 @@ namespace CarCaringBot
         }
 
         //private async Task<string> GetStoreLocation(string strAsk)
-        private string GetStoreLocation(string strAsk)
+        private string GetStoreLocation(CarCaringLUIS carLUIS)
         {
-            string storeData = "上海";
+            string storeData = "";
+
+            if (carLUIS.entities.Count() > 0)
+            {
+                storeData = "您要查找" + carLUIS.entities[0].entity + "附近的保修店。";
+            }
+
             return storeData;
         }
 
@@ -104,7 +110,7 @@ namespace CarCaringBot
                     switch (maxscore_intent.intent)
                     {
                         case "StoreLocation":
-                            CarCaringString = GetStoreLocation(carLUIS.entities[0].entity);
+                            CarCaringString = GetStoreLocation(carLUIS);
                             break;
                         case "CheckPrice":
                             CarCaringString = await GetPrice(carLUIS.entities[0].entity);

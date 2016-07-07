@@ -1,0 +1,29 @@
+﻿PartitionKey,RowKey,Province,City,Distri,Store,Address,URL
+AAA,2,北京市,北京市,昌平区,北京恒运康轮胎商贸中,北京市昌平区燕丹汽配城西区22号,http://hutai.giti.com/store-locator/detail?DealerCode=S0010056ZQB&Province=%E5%8C%97%E4%BA%AC%E5%B8%82&IsPromotion=False
+AAA,3,北京市,北京市,昌平区,北京路顺豫恒轮胎销售,北京市昌平区回龙观镇北郊汽配城H区1-2号,http://hutai.giti.com/store-locator/detail?DealerCode=S00100202LS&Province=%E5%8C%97%E4%BA%AC%E5%B8%82&IsPromotion=False
+AAA,4,北京市,北京市,昌平区,北京市东三旗孙一新汽,北京市昌平区北七家镇东三旗村218号,http://hutai.giti.com/store-locator/detail?DealerCode=S00100097LS&Province=%E5%8C%97%E4%BA%AC%E5%B8%82&IsPromotion=False
+AAA,5,北京市,北京市,昌平区,北京新龙天朔汽车配件,北京市昌平区回龙观镇北郊汽车配件市场E区1号,http://hutai.giti.com/store-locator/detail?DealerCode=S00100096LS&Province=%E5%8C%97%E4%BA%AC%E5%B8%82&IsPromotion=False
+AAA,6,北京市,北京市,昌平区,北京蓝碧建材有限公司,北京市昌平区阳坊镇东贯市村南,http://hutai.giti.com/store-locator/detail?DealerCode=S00100137LS&Province=%E5%8C%97%E4%BA%AC%E5%B8%82&IsPromotion=False
+AAA,7,北京市,北京市,昌平区,北京福乐常在汽车配件,北京市昌平区科技园区拓然家苑1号楼米其林轮胎,http://hutai.giti.com/store-locator/detail?DealerCode=S00100081LS&Province=%E5%8C%97%E4%BA%AC%E5%B8%82&IsPromotion=False
+AAA,8,北京市,北京市,昌平区,北京市昌平区东小口镇,北京市昌平区东小口镇半截塔村17号（临时）,http://hutai.giti.com/store-locator/detail?DealerCode=S00100167LS&Province=%E5%8C%97%E4%BA%AC%E5%B8%82&IsPromotion=False
+AAA,9,北京市,北京市,昌平区,北京大东流吉祥汽车配,北京市昌平区小汤山镇大东流4-5档,http://hutai.giti.com/store-locator/detail?DealerCode=S00100151LS&Province=%E5%8C%97%E4%BA%AC%E5%B8%82&IsPromotion=False
+AAA,10,北京市,北京市,昌平区,北京市昌平区东小口镇,北京市昌平区七里居镇白各庄村淀四路商品一条街8号,http://hutai.giti.com/store-locator/detail?DealerCode=S00100107LS&Province=%E5%8C%97%E4%BA%AC%E5%B8%82&IsPromotion=False
+AAA,11,北京市,北京市,昌平区,北京博识顺通汽车修理,北京市昌平区沙河镇王庄工业园东边底商二间,http://hutai.giti.com/store-locator/detail?DealerCode=S00100230LS&Province=%E5%8C%97%E4%BA%AC%E5%B8%82&IsPromotion=False
+AAA,12,北京市,北京市,昌平区,北京天赋宏涛汽车修理,北京市昌平区流村卫生院南侧,http://hutai.giti.com/store-locator/detail?DealerCode=S00100169LS&Province=%E5%8C%97%E4%BA%AC%E5%B8%82&IsPromotion=False
+AAA,13,北京市,北京市,昌平区,北京市沙河金轮汽车装,北京市昌平区沙河镇泗桥东200米,http://hutai.giti.com/store-locator/detail?DealerCode=S00100201LS&Province=%E5%8C%97%E4%BA%AC%E5%B8%82&IsPromotion=False
+AAA,14,北京市,北京市,昌平区,北京得财利强商贸中心,北京市昌平区百善镇上东廓村沙河机场正门向东150米,http://hutai.giti.com/store-locator/detail?DealerCode=S00100203LS&Province=%E5%8C%97%E4%BA%AC%E5%B8%82&IsPromotion=False
+AAA,15,上海市,上海市,嘉定区,上海驾捷乐商贸有限公 ,上海市嘉定区曹安公路1685号   ,http://hutai.giti.com/store-locator/detail?DealerCode=S00210268LS&Province=%E4%B8%8A%E6%B5%B7%E5%B8%82&IsPromotion=False
+AAA,16,上海市,上海市,杨浦区,上海驾捷乐商贸有限公,上海市杨浦区国和路33号    ,http://hutai.giti.com/store-locator/detail?DealerCode=S00210267LS&Province=%E4%B8%8A%E6%B5%B7%E5%B8%82&IsPromotion=False
+AAA,17,上海市,上海市,松江区,上海市闵行区七宝镇闵,上海市松江区泗泾镇方泗公路218号近九干路    ,http://hutai.giti.com/store-locator/detail?DealerCode=S00210233LS&Province=%E4%B8%8A%E6%B5%B7%E5%B8%82&IsPromotion=False
+AAA,18,上海市,上海市,浦东新区,上海承灿工贸有限公司,上海市浦东新区东川公路5538号    ,http://hutai.giti.com/store-locator/detail?DealerCode=S0021054FWB&Province=%E4%B8%8A%E6%B5%B7%E5%B8%82&IsPromotion=False
+AAA,19,上海市,上海市,浦东新区,上海奋飞经贸有限公司 ,上海市浦东新区秀沿路319号方舟汽车用品市场C49-52    ,http://hutai.giti.com/store-locator/detail?DealerCode=S0021114ZYA&Province=%E4%B8%8A%E6%B5%B7%E5%B8%82&IsPromotion=False
+AAA,20,上海市,上海市,浦东新区,上海烨赫汽车配件有限,上海市浦东新区惠南镇沪南公路9768号    ,http://hutai.giti.com/store-locator/detail?DealerCode=S0021001FWA&Province=%E4%B8%8A%E6%B5%B7%E5%B8%82&IsPromotion=False
+AAA,21,上海市,上海市,奉贤区,奉贤县塘外镇华蕾修理,上海市奉贤区塘外镇三角洋215号 ,http://hutai.giti.com/store-locator/detail?DealerCode=S0021010ZYB&Province=%E4%B8%8A%E6%B5%B7%E5%B8%82&IsPromotion=False
+AAA,22,上海市,上海市,奉贤区,上海楚涛工贸有限公司 ,上海市奉贤区运河北路758号,http://hutai.giti.com/store-locator/detail?DealerCode=S00210149LS&Province=%E4%B8%8A%E6%B5%B7%E5%B8%82&IsPromotion=False
+AAA,23,上海市,上海市,奉贤区,上海市奉贤区忠辉机动,上海市奉贤区肖塘镇大叶公路3536号    ,http://hutai.giti.com/store-locator/detail?DealerCode=S0021120FWB&Province=%E4%B8%8A%E6%B5%B7%E5%B8%82&IsPromotion=False
+AAA,24,上海市,上海市,浦东新区,黄全国,上海市浦东新区齐河路1171号    ,http://hutai.giti.com/store-locator/detail?DealerCode=S00210167LS&Province=%E4%B8%8A%E6%B5%B7%E5%B8%82&IsPromotion=False
+AAA,25,上海市,上海市,青浦区,上海鸣旺装饰服务部,上海市青浦区青松路439号  ,http://hutai.giti.com/store-locator/detail?DealerCode=S00210166LS&Province=%E4%B8%8A%E6%B5%B7%E5%B8%82&IsPromotion=False
+AAA,26,上海市,上海市,松江区,郑秉水,上海市松江区新桥镇九新公路2576-2578号     ,http://hutai.giti.com/store-locator/detail?DealerCode=S00210171LS&Province=%E4%B8%8A%E6%B5%B7%E5%B8%82&IsPromotion=False
+AAA,27,上海市,上海市,松江区,上海市松江区小昆山镇,上海市松江区小昆山镇文翔路5218弄B121号  ,http://hutai.giti.com/store-locator/detail?DealerCode=S00210221LS&Province=%E4%B8%8A%E6%B5%B7%E5%B8%82&IsPromotion=False
+AAA,28,上海市,上海市,金山区,上海市金山区博冠汽车 ,上海市金山区枫泾镇枫阳路154号 ,http://hutai.giti.com/store-locator/detail?DealerCode=S00210212LS&Province=%E4%B8%8A%E6%B5%B7%E5%B8%82&IsPromotion=False
+AAA,29,上海市,上海市,普陀区,上海阿建汽车配件有限,上海市普陀区香樟路128号 ,http://hutai.giti.com/store-locator/detail?DealerCode=S0021103FWB&Province=%E4%B8%8A%E6%B5%B7%E5%B8%82&IsPromotion=False
