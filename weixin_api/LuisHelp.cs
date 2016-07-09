@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -68,7 +69,7 @@ namespace weixin_api
         }
 
         //private async Task<string> GetStoreLocation(string strAsk)
-        public string GetStoreLocation(CarCaringLUIS carLUIS)
+        public string GetStoreLocation(CarCaringLUIS carLUIS, ref string storeURL)
         {
             string storeData = "";
             int ent_count = carLUIS.entities.Count();
@@ -80,11 +81,16 @@ namespace weixin_api
                 {
                     ent_str += carLUIS.entities[i].entity;
                 }
-                storeData = "您要查找" + ent_str + "附近的保修店。";
+                if (ent_str.IndexOf("市") < 0)
+                    ent_str = ent_str + "市";
+
+                storeData = "您要查找" + ent_str + "附近的轮胎保修店。";
+                storeURL = "http://www.giti.com/store-locator/list?province=" + HttpUtility.UrlEncode(ent_str);
             }
             else // likely no location info
             {
                 storeData = "可以说说您的位置在哪? 或者到 http://hutai.giti.com/store-locator 指定位置。";
+                storeURL = "";
             }
 
             return storeData;

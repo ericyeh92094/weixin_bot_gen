@@ -108,7 +108,24 @@ namespace weixin_api
                     switch (maxscore_intent.intent)
                     {
                         case "StoreLocation":
-                            CarCaringString = cognitive.GetStoreLocation(carLUIS);
+                            string storeURL = "";
+                            CarCaringString = cognitive.GetStoreLocation(carLUIS, ref storeURL);
+                            if (storeURL != "")
+                            {
+                                responseContent = string.Format(ReplyType.Message_News_Main,
+                                     FromUserName.InnerText,
+                                     ToUserName.InnerText,
+                                     DateTime.Now.Ticks,
+                                     "2",
+                                     string.Format(ReplyType.Message_News_Item, "", "查找店家资讯",
+                                     "",
+                                     "http://www.giti.com/") + 
+                                     string.Format(ReplyType.Message_News_Item, CarCaringString, "",
+                                    "http://www.giti.com/Content/en/Images/giti-tire-store_icon.png",
+                                     storeURL));
+
+                                return responseContent;
+                            }
                             break;
                         case "CheckPrice":
                             CarCaringString = cognitive.GetPrice(carLUIS);
