@@ -5,6 +5,8 @@ using System.IO;
 using System.Text;
 using System.Web.Security;
 using System.Xml;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace weixin_api
 {
@@ -14,21 +16,21 @@ namespace weixin_api
     public class messageHelp
     {
         //返回消息
-        public string ReturnMessage(string postStr)
+        public async Task<string> ReturnMessage(string postStr)
         {
             string responseContent = "";
             XmlDocument xmldoc = new XmlDocument();
             xmldoc.Load(new System.IO.MemoryStream(System.Text.Encoding.GetEncoding("UTF-8").GetBytes(postStr)));
             XmlNode MsgType = xmldoc.SelectSingleNode("/xml/MsgType");
-            if (MsgType!=null)
+            if (MsgType != null)
             {
                 switch (MsgType.InnerText)
                 {
                     case "event":
-                        responseContent=EventHandle(xmldoc);//事件处理
+                        responseContent = EventHandle(xmldoc);//事件处理
                         break;
                     case "text":
-                        responseContent=TextHandle(xmldoc);//接受文本消息处理
+                        responseContent = await TextHandle(xmldoc);//接受文本消息处理
                         break;
                     default:
                         break;
@@ -87,7 +89,7 @@ namespace weixin_api
             return responseContent;
         }
         //接受文本消息
-        public string TextHandle(XmlDocument xmldoc)
+        public async Task<string> TextHandle(XmlDocument xmldoc)
         {
             string responseContent = "";
             XmlNode ToUserName = xmldoc.SelectSingleNode("/xml/ToUserName");
@@ -95,11 +97,55 @@ namespace weixin_api
             XmlNode Content = xmldoc.SelectSingleNode("/xml/Content");
             if (Content != null)
             {
+
+                LuisHelp cognitive = new weixin_api.LuisHelp();
+                string CarCaringString;
+                CarCaringLUIS carLUIS = await LuisHelp.GetEntityFromLUIS(Content.InnerText);
+                if (carLUIS.intents.Count() > 0)
+                {
+                    Intent maxscore_intent = carLUIS.intents.Max();
+
+                    switch (maxscore_intent.intent)
+                    {
+                        case "StoreLocation":
+                            CarCaringString = cognitive.GetStoreLocation(carLUIS);
+                            break;
+                        case "CheckPrice":
+                            CarCaringString = cognitive.GetPrice(carLUIS);
+                            break;
+                        case "CheckItem":
+                            CarCaringString = cognitive.GetItem(carLUIS);
+                            break;
+                        case "News":
+                            CarCaringString = cognitive.GetNews(carLUIS);
+                            break;
+                        case "Tips":
+                            CarCaringString = cognitive.GetTips(carLUIS);
+                            break;
+                        default:
+                            CarCaringString = "您可以到网站去查询我门的最新讯息。";
+
+                            responseContent = string.Format(ReplyType.Message_News_Main,
+                                FromUserName.InnerText,
+                                ToUserName.InnerText,
+                                DateTime.Now.Ticks,
+                                "1",
+                                string.Format(ReplyType.Message_News_Item, "佳通新闻", "您可以询问附近的保修站，轮胎商品或是保养知识；或到网站去查询我门的最新讯息。",
+                                "http://www.giti.com/Content/cn/Images/288-15day.png",
+                                "http://www.giti.com/"));
+
+                            return responseContent;
+                            break;
+                    }
+                }
+                else
+                {
+                    CarCaringString = "您可以到网站去查询我门的最新讯息。";
+                }
                 responseContent = string.Format(ReplyType.Message_Text, 
                     FromUserName.InnerText, 
                     ToUserName.InnerText, 
-                    DateTime.Now.Ticks, 
-                    "欢迎使用微信公共账号，您输入的内容为：" + Content.InnerText+"\r\n<a href=\"http://www.baidu.com\">点击进入</a>");
+                    DateTime.Now.Ticks, CarCaringString);
             }
             return responseContent;
         }

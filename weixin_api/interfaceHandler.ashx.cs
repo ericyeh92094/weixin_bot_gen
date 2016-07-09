@@ -14,6 +14,7 @@ namespace weixin_api
     /// </summary>
     public class interfaceHandler : IHttpHandler
     {
+        HttpResponse currentResponse;
         public void ProcessRequest(HttpContext param_context)
         {
 
@@ -26,6 +27,8 @@ namespace weixin_api
                     Byte[] postBytes = new Byte[stream.Length];
                     stream.Read(postBytes, 0, (Int32)stream.Length);
                     postString = Encoding.UTF8.GetString(postBytes);
+
+                    currentResponse = HttpContext.Current.Response;
                     Handle(postString);
                 }
             }
@@ -40,13 +43,16 @@ namespace weixin_api
         /// <summary>
         /// 处理信息并应答
         /// </summary>
-        private void Handle(string postStr)
+        private async void Handle(string postStr)
         {
             messageHelp help = new messageHelp();
-            string responseContent = help.ReturnMessage(postStr);
+            string responseContent = await help.ReturnMessage(postStr);
 
-            HttpContext.Current.Response.ContentEncoding = Encoding.UTF8;
-            HttpContext.Current.Response.Write(responseContent);
+            currentResponse.ContentEncoding = Encoding.UTF8;
+            currentResponse.Write(responseContent);
+
+            //HttpContext.Current.Response.ContentEncoding = Encoding.UTF8;
+            //HttpContext.Current.Response.Write(responseContent);
         }
 
         //成为开发者url测试，返回echoStr
