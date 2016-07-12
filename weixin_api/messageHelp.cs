@@ -51,6 +51,7 @@ namespace weixin_api
                 //菜单单击事件
                 if (Event.InnerText.Equals("CLICK"))
                 {
+                    /*
                     if (EventKey.InnerText.Equals("click_one"))//click_one
                     {
                         responseContent = string.Format(ReplyType.Message_Text,
@@ -61,29 +62,13 @@ namespace weixin_api
                     }
                     else if (EventKey.InnerText.Equals("click_two"))//click_two
                     {
-                        responseContent = string.Format(ReplyType.Message_News_Main, 
-                            FromUserName.InnerText, 
-                            ToUserName.InnerText, 
-                            DateTime.Now.Ticks, 
-                            "2",
-                             string.Format(ReplyType.Message_News_Item,"我要寄件","",
-                             "http://www.soso.com/orderPlace.jpg",
-                             "http://www.soso.com/")+
-                             string.Format(ReplyType.Message_News_Item, "订单管理", "",
-                             "http://www.soso.com/orderManage.jpg",
-                             "http://www.soso.com/"));
+  
                     }
                     else if (EventKey.InnerText.Equals("click_three"))//click_three
                     {
-                        responseContent = string.Format(ReplyType.Message_News_Main,
-                            FromUserName.InnerText,
-                            ToUserName.InnerText,
-                            DateTime.Now.Ticks,
-                            "1",
-                             string.Format(ReplyType.Message_News_Item, "标题", "摘要",
-                             "http://www.soso.com/jieshao.jpg",
-                             "http://www.soso.com/"));
+
                     }
+                    */
                 }
             }
             return responseContent;
