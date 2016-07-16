@@ -122,7 +122,8 @@ namespace weixin_api
                             CarCaringString = cognitive.GetNews(carLUIS);
                             break;
                         case "Tips":
-                            CarCaringString = cognitive.GetTips(carLUIS);
+                            CarCaringString = await cognitive.GetTips(carLUIS, FromUserName.InnerText, ToUserName.InnerText);
+                            return CarCaringString;
                             break;
                         default:
                             CarCaringString = "您可以到网站去查询我门的最新讯息。";

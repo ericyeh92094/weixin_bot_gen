@@ -9,6 +9,9 @@ using System.Web.Http.Description;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Utilities;
 using Newtonsoft.Json;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace weixin_api
 {
@@ -145,26 +148,137 @@ namespace weixin_api
             return itemData;
         }
 
-        public string GetTips(CarCaringLUIS carLUIS)
+        public async Task<CarCaringLUIS> GetModel(string appId, string subKey, string Query)
         {
-            string itemData = "";
-            int ent_count = carLUIS.entities.Count();
-
-            if (ent_count > 0)
+            Query = Uri.EscapeDataString(Query);
+            CarCaringLUIS Model = new CarCaringLUIS();
+            using (HttpClient client = new HttpClient())
             {
-                string ent_str = "";
-                for (int i = 0; i < ent_count; i++)
+                string RequestURI = "https://api.projectoxford.ai/luis/v1/application?id=" + appId + "&subscription-key=" + subKey + "&q=" + Query;
+                HttpResponseMessage msg = await client.GetAsync(RequestURI);
+
+                if (msg.IsSuccessStatusCode)
                 {
-                    ent_str += carLUIS.entities[i].entity;
+                    var JsonDataResponse = await msg.Content.ReadAsStringAsync();
+                    Model = JsonConvert.DeserializeObject<CarCaringLUIS>(JsonDataResponse);
                 }
-                itemData = "您要查找" + ent_str + "的相关资讯。请到 http://www.giti.com/giti-doctor?b=1&s=1 请教轮胎博士。";
             }
-            else // likely no location info
+            return Model;
+        }
+        public async Task<Intent[]> GetTipIntent(string Query)
+        {
+            string appId_G1 = "6b3f6b3c-f226-493c-8b46-65c234e7fa27";
+            string appId_G2 = "387f9840-cbf8-4609-a672-42258b6eebca";
+            string appId_G3 = "8f3dbae8-af16-4d06-a03e-44511607583b";
+            string subKey = "f5feb1edbaf3400daff5b89ea13dc85f";
+
+            CarCaringLUIS ModelG1 = await GetModel(appId_G1, subKey, Query);
+            CarCaringLUIS ModelG2 = await GetModel(appId_G2, subKey, Query);
+            CarCaringLUIS ModelG3 = await GetModel(appId_G3, subKey, Query);
+
+            Intent [] score_intent = new Intent[20];
+
+            int i = 0;
+            foreach (Intent intent in ModelG1.intents)
+                if (intent.score > 0.02 && intent.intent != "None")
+                    score_intent[i++] = intent;
+
+            foreach (Intent intent in ModelG2.intents)
+                if (intent.score > 0.02 && intent.intent != "None")
+                    score_intent[i++] = intent;
+
+            foreach (Intent intent in ModelG3.intents)
+                if (intent.score > 0.02 && intent.intent != "None")
+                    score_intent[i++] = intent;
+
+            return score_intent;
+        }
+
+        public class GitiDocKB : TableEntity
+        {
+            public GitiDocKB() { }
+
+            public string ID { get; set; }
+            public string Questions { get; set; }
+            public string Topic { get; set; }
+            public string PicURL { get; set; }
+            public string Model { get; set; }
+        }
+        public string GetKB(string intent_id)
+        {
+            string response = "";
+            string accountName = "gitio2otable";
+            string key = "FLK9B+lVSQNUyNPnOBSALHBBmDBn8afggeocKWxWNBzaK0KACErrswA/iZR7wbMB+T1hrFMsMahNgbJiM4yTHA==";
+
+            intent_id = intent_id.Remove(0, 3);
+            StorageCredentials creds = new StorageCredentials(accountName, key);
+            CloudStorageAccount account = new CloudStorageAccount(creds, useHttps: true);
+            CloudTableClient client = account.CreateCloudTableClient();
+            CloudTable table = client.GetTableReference("gitidockb");
+
+            //TableOperation retrieveOperation = TableOperation.Retrieve<GitiDocKB>("ID", intent_id);
+            TableQuery<GitiDocKB> intentQuery = new TableQuery<GitiDocKB>().Where(
+                TableQuery.CombineFilters(
+                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "AAA"),
+                    TableOperators.And,
+                    TableQuery.GenerateFilterCondition("ID", QueryComparisons.Equal, intent_id)));
+            var results = table.ExecuteQuery(intentQuery);
+
+            if (results.Any())
             {
-                itemData = "想了解更多保养知识? 请到 http://www.giti.com/giti-doctor?b=1&s=1 请教轮胎博士。";
+                foreach (GitiDocKB kb in results)
+                {
+                    string url = "http://www.giti.com" + kb.Topic.Replace("&amp;", "&");
+                    response = string.Format(ReplyType.Message_News_Item, kb.Questions, "", kb.PicURL, url);
+                }
+            }
+            return response;
+        }
+        public async Task<string> GetTips(CarCaringLUIS carLUIS, string fromUser, string toUser)
+        {
+            Intent [] maxscore_intent = await GetTipIntent(carLUIS.query);
+
+            int count = maxscore_intent.Count();
+  
+            string infoStr = string.Format(ReplyType.Message_News_Item, "佳通轮胎博士", "佳通轮胎博士",
+                                     "http://www.giti.com/Content/cn/Images/doctor-ask.png",
+                                     "http://www.giti.com/");
+            int cnt = 1;
+            for (int i = 0; i < count; i++)
+            {
+                if (maxscore_intent[i] != null)
+                {
+                    infoStr += GetKB(maxscore_intent[i].intent);
+
+                        //string.Format(ReplyType.Message_News_Item, carLUIS.query + maxscore_intent[i].intent, "", "", "http://www.giti.com/");
+                    cnt++;
+                }
             }
 
-            return itemData;
+            string responseContent = string.Format(ReplyType.Message_News_Main, fromUser, toUser,
+                DateTime.Now.Ticks,
+                cnt.ToString(),
+                infoStr);
+
+            return responseContent;
+
+              /*
+              int ent_count = carLUIS.entities.Count();
+
+              if (ent_count > 0)
+              {
+                  string ent_str = "";
+                  for (int i = 0; i < ent_count; i++)
+                  {
+                      ent_str += carLUIS.entities[i].entity;
+                  }
+                  itemData = "您要查找" + ent_str + "的相关资讯。请到 http://www.giti.com/giti-doctor?b=1&s=1 请教轮胎博士。";
+              }
+              else // likely no location info
+              {
+                  itemData = "想了解更多保养知识? 请到 http://www.giti.com/giti-doctor?b=1&s=1 请教轮胎博士。";
+              }
+              */
         }
     }
 }
