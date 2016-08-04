@@ -51,8 +51,6 @@ namespace weixin_api
             currentResponse.ContentEncoding = Encoding.UTF8;
             currentResponse.Write(responseContent);
 
-            //HttpContext.Current.Response.ContentEncoding = Encoding.UTF8;
-            //HttpContext.Current.Response.Write(responseContent);
         }
 
         //成为开发者url测试，返回echoStr

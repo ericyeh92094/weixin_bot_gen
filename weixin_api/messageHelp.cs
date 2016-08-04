@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Web.Security;
 using System.Xml;
+using System.Xml.Linq;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -46,6 +47,7 @@ namespace weixin_api
             XmlNode EventKey = xmldoc.SelectSingleNode("/xml/EventKey");
             XmlNode ToUserName = xmldoc.SelectSingleNode("/xml/ToUserName");
             XmlNode FromUserName = xmldoc.SelectSingleNode("/xml/FromUserName");
+
             if (Event!=null)
             {
                 //菜单单击事件
@@ -71,15 +73,20 @@ namespace weixin_api
                     */
                 }
             }
+
             return responseContent;
         }
         //接受文本消息
         public async Task<string> TextHandle(XmlDocument xmldoc)
         {
+
             string responseContent = "";
             XmlNode ToUserName = xmldoc.SelectSingleNode("/xml/ToUserName");
             XmlNode FromUserName = xmldoc.SelectSingleNode("/xml/FromUserName");
             XmlNode Content = xmldoc.SelectSingleNode("/xml/Content");
+
+           // MessageDBLog(xmldoc, false, null);
+
             if (Content != null)
             {
 
@@ -116,7 +123,8 @@ namespace weixin_api
                             CarCaringString = cognitive.GetPrice(carLUIS);
                             break;
                         case "CheckItem":
-                            CarCaringString = cognitive.GetItem(carLUIS);
+                            CarCaringString = await cognitive.GetItem(carLUIS, FromUserName.InnerText, ToUserName.InnerText);
+                            return CarCaringString;
                             break;
                         case "News":
                             CarCaringString = cognitive.GetNews(carLUIS);
@@ -126,18 +134,8 @@ namespace weixin_api
                             return CarCaringString;
                             break;
                         default:
-                            CarCaringString = "您可以到网站去查询我门的最新讯息。";
-
-                            responseContent = string.Format(ReplyType.Message_News_Main,
-                                FromUserName.InnerText,
-                                ToUserName.InnerText,
-                                DateTime.Now.Ticks,
-                                "1",
-                                string.Format(ReplyType.Message_News_Item, "佳通新闻", "您可以询问附近的保修站，轮胎商品或是保养知识；或到网站去查询我门的最新讯息。",
-                                "http://www.giti.com/Content/cn/Images/288-15day.png",
-                                "http://www.giti.com/"));
-
-                            return responseContent;
+                            CarCaringString = await cognitive.GetBingSearch(Content.InnerText, "佳通官网", "您可以询问附近的保修站，轮胎商品或是保养知识；或到网站去查询我门的最新讯息。",FromUserName.InnerText, ToUserName.InnerText);
+                            return CarCaringString;
                             break;
                     }
                 }
@@ -150,6 +148,8 @@ namespace weixin_api
                     ToUserName.InnerText, 
                     DateTime.Now.Ticks, CarCaringString);
             }
+
+            //MessageDBLog(xmldoc, true, responseContent);
             return responseContent;
         }
 
@@ -159,6 +159,30 @@ namespace weixin_api
             StreamWriter sw = new StreamWriter(HttpContext.Current.Server.MapPath(".") + "\\log.txt", true);
             sw.WriteLine(text);
             sw.Close();//写入
+        }
+
+        public void MessageDBLog(XmlDocument xmldoc, bool OutMsg, string xmlString)
+        {
+            var db = new MessageDBDataContext();
+            Message wechatmsg = new Message();
+
+            XmlNode MsgId = xmldoc.SelectSingleNode("/xml/MsgId");
+            XmlNode FromUserName = xmldoc.SelectSingleNode("/xml/FromUserName");
+            XmlNode Content = xmldoc.SelectSingleNode("/xml/Content");
+            XmlNode MsgType = xmldoc.SelectSingleNode("/xml/MsgType");
+
+            wechatmsg.MessageID = MsgId.InnerText;
+            wechatmsg.FromUserName = FromUserName.InnerText;
+            wechatmsg.MsgType = MsgType.InnerText;
+            wechatmsg.CreateTimeWeChat = DateTime.Now.ToString();
+
+            wechatmsg.Out = OutMsg;
+            if (OutMsg)
+                wechatmsg.ContentWeChat = XElement.Parse(xmlString);
+            else
+                wechatmsg.ContentWeChat = System.Xml.Linq.XElement.Load(new XmlNodeReader(xmldoc));
+            db.Messages.InsertOnSubmit(wechatmsg);
+            db.SubmitChanges();
         }
     }
 

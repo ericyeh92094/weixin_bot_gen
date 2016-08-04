@@ -11,155 +11,11 @@ using Newtonsoft.Json;
 
 namespace CarCaringBot
 {
-    public class Intent : IComparable<Intent>
-    {
-        public string intent { get; set; }
-        public float score { get; set; }
-
-        int IComparable<Intent>.CompareTo(Intent other)
-        {
-            if (other.score > score)
-                return -1;
-            else if (other.score == score)
-                return 0;
-            else
-                return 1;
-        }
-    }
-
-    public class Entity
-    {
-        public string entity { get; set; }
-        public string type { get; set; }
-        public int startIndex { get; set; }
-        public int endIndex { get; set; }
-        public float score { get; set; }
-    }
-
-    public class CarCaringLUIS
-    {
-        public string query { get; set; }
-        public Intent[] intents { get; set; }
-        public Entity[] entities { get; set; }
-    }
 
     [BotAuthentication]
     public class MessagesController : ApiController
     {
-        private static async Task<CarCaringLUIS> GetEntityFromLUIS(string Query)
-        {
-            string appId = "b3369986-b55a-4f56-8755-97961e2b69bc";
-            string subKey = "f5feb1edbaf3400daff5b89ea13dc85f";
 
-            Query = Uri.EscapeDataString(Query);
-            CarCaringLUIS Data = new CarCaringLUIS();
-            using (HttpClient client = new HttpClient())
-            {
-                string RequestURI = "https://api.projectoxford.ai/luis/v1/application?id="+appId+ "&subscription-key=" + subKey + "&q=" + Query;
-                HttpResponseMessage msg = await client.GetAsync(RequestURI);
-
-                if (msg.IsSuccessStatusCode)
-                {
-                    var JsonDataResponse = await msg.Content.ReadAsStringAsync();
-                    Data = JsonConvert.DeserializeObject<CarCaringLUIS>(JsonDataResponse);
-                }
-            }
-            return Data;
-        }
-
-        //private async Task<string> GetStoreLocation(string strAsk)
-        private string GetStoreLocation(CarCaringLUIS carLUIS)
-        {
-            string storeData = "";
-            int ent_count = carLUIS.entities.Count();
-
-            if ( ent_count > 0)
-            {
-                string ent_str = "";
-                for (int i = 0; i < ent_count; i++ )
-                {
-                    ent_str += carLUIS.entities[i].entity;
-                }
-                storeData = "您要查找" + ent_str + "附近的保修店。";
-            }
-            else // likely no location info
-            {
-                storeData = "可以说说您的位置在哪? 或者到 http://hutai.giti.com/store-locator 指定位置。";
-            }
-
-            return storeData;
-        }
-
-        private async Task<string> GetPrice(CarCaringLUIS carLUIS)
-        {
-            string priceData = "三百元";
-            return priceData;
-        }
-        private async Task<string> GetItem(CarCaringLUIS carLUIS)
-        {
-            string itemData = "";
-            int ent_count = carLUIS.entities.Count();
-
-            if (ent_count > 0)
-            {
-                string ent_str = "";
-                for (int i = 0; i < ent_count; i++)
-                {
-                    ent_str += carLUIS.entities[i].entity;
-                }
-                itemData = "您要查找" + ent_str + "的相关资讯。";
-            }
-            else // likely no location info
-            {
-                itemData = "可以说说您想要的轮胎规格? 或者到 http://www.giti.com/tires/daily-driving 查找您要的品项。";
-            }
-
-            return itemData;
-        }
-
-        private async Task<string> GetNews(CarCaringLUIS carLUIS)
-        {
-            string itemData = "";
-            int ent_count = carLUIS.entities.Count();
-
-            if (ent_count > 0)
-            {
-                string ent_str = "";
-                for (int i = 0; i < ent_count; i++)
-                {
-                    ent_str += carLUIS.entities[i].entity;
-                }
-                itemData = "您要查找" + ent_str + "的相关资讯。请到 http://www.giti.com/promotion 逛逛。";
-            }
-            else // likely no location info
-            {
-                itemData = "想知道热门促销? 请到 http://www.giti.com/promotion 逛逛。";
-            }
-
-            return itemData;
-        }
-
-        private async Task<string> GetTips(CarCaringLUIS carLUIS)
-        {
-            string itemData = "";
-            int ent_count = carLUIS.entities.Count();
-
-            if (ent_count > 0)
-            {
-                string ent_str = "";
-                for (int i = 0; i < ent_count; i++)
-                {
-                    ent_str += carLUIS.entities[i].entity;
-                }
-                itemData = "您要查找" + ent_str + "的相关资讯。请到 http://www.giti.com/giti-doctor?b=1&s=1 请教轮胎博士。";
-            }
-            else // likely no location info
-            {
-                itemData = "想了解更多保养知识? 请到 http://www.giti.com/giti-doctor?b=1&s=1 请教轮胎博士。";
-            }
-
-            return itemData;
-        }
         /// <summary>
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
@@ -168,10 +24,9 @@ namespace CarCaringBot
         {
             if (message.Type == "Message")
             {
-                // calculate something for us to return
-                int length = (message.Text ?? string.Empty).Length;
+                LuisHelp cognitive = new LuisHelp();
                 string CarCaringString;
-                CarCaringLUIS carLUIS = await GetEntityFromLUIS(message.Text);
+                CarCaringLUIS carLUIS = await LuisHelp.GetEntityFromLUIS(message.Text);
                 if (carLUIS.intents.Count() > 0)
                 {
                     Intent maxscore_intent = carLUIS.intents.Max();
@@ -179,22 +34,25 @@ namespace CarCaringBot
                     switch (maxscore_intent.intent)
                     {
                         case "StoreLocation":
-                            CarCaringString = GetStoreLocation(carLUIS);
+                            string storeURL = "";
+                            CarCaringString = cognitive.GetStoreLocation(carLUIS, ref storeURL);
                             break;
                         case "CheckPrice":
-                            CarCaringString = await GetPrice(carLUIS);
+                            CarCaringString = cognitive.GetPrice(carLUIS);
                             break;
                         case "CheckItem":
-                            CarCaringString = await GetItem(carLUIS);
+                            CarCaringString = cognitive.GetItem(carLUIS);
                             break;
                         case "News":
-                            CarCaringString = await GetNews(carLUIS);
+                            CarCaringString = cognitive.GetNews(carLUIS);
                             break;
                         case "Tips":
-                            CarCaringString = await GetTips(carLUIS);
+                            CarCaringString = await cognitive.GetTips(carLUIS, "FromUser", "ToUser");
                             break;
                         default:
-                            CarCaringString = "您可以到网站去查询我门的最新讯息。";
+                            CarCaringString = await cognitive.GetBingSearch(message.Text); // "您可以到网站去查询我门的最新讯息。";
+
+
                             break;
                     }
                 }
@@ -241,6 +99,58 @@ namespace CarCaringBot
             }
 
             return null;
+        }
+    }
+
+    //回复类型
+    public class ReplyType
+    {
+        /// <summary>
+        /// 普通文本消息
+        /// </summary>
+        public static string Message_Text
+        {
+            get { return @"<xml>
+                            <ToUserName><![CDATA[{0}]]></ToUserName>
+                            <FromUserName><![CDATA[{1}]]></FromUserName>
+                            <CreateTime>{2}</CreateTime>
+                            <MsgType><![CDATA[text]]></MsgType>
+                            <Content><![CDATA[{3}]]></Content>
+                            </xml>"; }
+        }
+        /// <summary>
+        /// 图文消息主体
+        /// </summary>
+        public static string Message_News_Main
+        {
+            get
+            {
+                return @"<xml>
+                            <ToUserName><![CDATA[{0}]]></ToUserName>
+                            <FromUserName><![CDATA[{1}]]></FromUserName>
+                            <CreateTime>{2}</CreateTime>
+                            <MsgType><![CDATA[news]]></MsgType>
+                            <ArticleCount>{3}</ArticleCount>
+                            <Articles>
+                            {4}
+                            </Articles>
+                            </xml> ";
+            }
+        }
+        /// <summary>
+        /// 图文消息项
+        /// </summary>
+        public static string Message_News_Item
+        {
+            get
+            {
+                return @"<item>
+                            <Title><![CDATA[{0}]]></Title> 
+                            <Description><![CDATA[{1}]]></Description>
+                            <PicUrl><![CDATA[{2}]]></PicUrl>
+                            <Url><![CDATA[{3}]]></Url>
+                            </item>";
+            }
         }
     }
 }

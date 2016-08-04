@@ -13,7 +13,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Table;
 
-namespace weixin_api
+namespace CarCaringBot
 {
     public class Intent : IComparable<Intent>
     {
@@ -105,10 +105,9 @@ namespace weixin_api
             string priceData = "三百元";
             return priceData;
         }
-        public async Task<string>GetItem(CarCaringLUIS carLUIS, string fromUser, string toUser)
+        public string GetItem(CarCaringLUIS carLUIS)
         {
             string itemData = "";
-            string queryStr = carLUIS.query;
             int ent_count = carLUIS.entities.Count();
 
             if (ent_count > 0)
@@ -118,11 +117,13 @@ namespace weixin_api
                 {
                     ent_str += carLUIS.entities[i].entity;
                 }
-                //itemData = "您要查找" + ent_str + "的相关资讯。";
-                queryStr = carLUIS.query + " " + ent_str;
+                itemData = "您要查找" + ent_str + "的相关资讯。";
+            }
+            else // likely no location info
+            {
+                itemData = "可以说说您想要的轮胎规格? 或者到 http://www.giti.com/tires/daily-driving 查找您要的品项。";
             }
 
-            itemData = await GetBingSearch(queryStr, "查找规格", "可以说说您想要的轮胎规格? 或者到 http://www.giti.com/tires/daily-driving 查找您要的品项。", fromUser, toUser);
             return itemData;
         }
 
@@ -148,7 +149,7 @@ namespace weixin_api
             return itemData;
         }
 
-        public async Task<string> GetBingSearch(string query, string mainTitle, string mainMsg, string fromUser, string toUser)
+        public async Task<string> GetBingSearch(string query)
         {
             string sub_key = "8c9c892854ca40efb3c05070f2158704";
             RootObject searchResults = new RootObject();
@@ -160,27 +161,17 @@ namespace weixin_api
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", sub_key);
 
             // Request parameters
-            //queryString["q"] = query;
-            queryString["count"] = "10";
+            queryString["q"] = query;
+            queryString["count"] = "5";
             queryString["offset"] = "0";
-            queryString["mkt"] = "zh-cn";
+            queryString["mkt"] = "zh-CN";
             queryString["safeSearch"] = "Moderate";
-            var uri = "https://api.cognitive.microsoft.com/bing/v5.0/search?q=" + query + queryString;
+            var uri = "https://api.cognitive.microsoft.com/bing/v5.0/search?" + queryString;
 
             var response = await client.GetStringAsync(uri);
             searchResults = JsonConvert.DeserializeObject<RootObject>(response);
 
-            string resultStr = string.Format(ReplyType.Message_News_Item, mainTitle, mainMsg,
-                    "http://www.giti.com/Content/cn/Images/288-15day.png",
-                    "http://www.giti.com/");
-
-            for (int i = 0; i < 5; i++)
-            {
-                resultStr += string.Format(ReplyType.Message_News_Item, searchResults.webPages.value[i].name, searchResults.webPages.value[i].snippet,
-                    searchResults.webPages.value[i].thumbnailUrl, searchResults.webPages.value[i].url);
-            }
-            string itemData = string.Format(ReplyType.Message_News_Main, fromUser, toUser, DateTime.Now.Ticks,
-                    "5", resultStr);
+            string itemData = searchResults.webPages.value[0].name;
 
             return itemData;
 
