@@ -134,7 +134,9 @@ namespace weixin_api
                             return CarCaringString;
                             break;
                         default:
-                            CarCaringString = await cognitive.GetBingSearch(Content.InnerText, "佳通官网", "您可以询问附近的保修站，轮胎商品或是保养知识；或到网站去查询我门的最新讯息。",FromUserName.InnerText, ToUserName.InnerText);
+                            //CarCaringString = await cognitive.GetBingSearch(Content.InnerText, "佳通官网", "您可以询问附近的保修站，轮胎商品或是保养知识；或到网站去查询我门的最新讯息。",FromUserName.InnerText, ToUserName.InnerText);
+       
+                            CarCaringString = await cognitive.GetTunling123(Content.InnerText, "佳通官网", "您可以询问附近的保修站，轮胎商品或是保养知识；或到网站去查询我门的最新讯息。", FromUserName.InnerText, ToUserName.InnerText);
                             return CarCaringString;
                             break;
                     }
