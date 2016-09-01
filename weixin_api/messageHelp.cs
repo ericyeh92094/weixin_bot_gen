@@ -89,9 +89,22 @@ namespace weixin_api
 
             if (Content != null)
             {
+                string CarCaringString;
+
+                if (Content.InnerText == "scan")
+                {
+                    CarCaringString = "https://ironmanservice.azurewebsites.net/barcodeScan.aspx";
+                    responseContent = string.Format(ReplyType.Message_Text,
+                    FromUserName.InnerText,
+                    ToUserName.InnerText,
+                    DateTime.Now.Ticks, CarCaringString);
+
+                    return responseContent;
+
+                }
 
                 LuisHelp cognitive = new weixin_api.LuisHelp();
-                string CarCaringString;
+                
                 CarCaringLUIS carLUIS = await LuisHelp.GetEntityFromLUIS(Content.InnerText);
                 if (carLUIS.intents.Count() > 0)
                 {

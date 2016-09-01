@@ -126,12 +126,15 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="barcodeScan.aspx" />
     <Content Include="createMenu.aspx" />
     <Content Include="dbo.Messages.sql" />
     <Content Include="menu.txt" />
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.4.1.js" />
     <Content Include="Scripts\jquery-1.4.1.min.js" />
+    <Content Include="Scripts\qrcode.js" />
+    <Content Include="Scripts\qrcode.min.js" />
     <Content Include="selectMenu.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -140,8 +143,16 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="weui.css" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="barcodeScan.aspx.cs">
+      <DependentUpon>barcodeScan.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="barcodeScan.aspx.designer.cs">
+      <DependentUpon>barcodeScan.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BingSearch.cs" />
     <Compile Include="createMenu.aspx.cs">
       <DependentUpon>createMenu.aspx</DependentUpon>
@@ -167,6 +178,14 @@
     <Compile Include="selectMenu.aspx.designer.cs">
       <DependentUpon>selectMenu.aspx</DependentUpon>
     </Compile>
+    <Compile Include="wechatJS\AccessToken.cs" />
+    <Compile Include="wechatJS\JsonHelper.cs" />
+    <Compile Include="wechatJS\JSSDK.cs" />
+    <Compile Include="wechatJS\JSTicket.cs" />
+    <Compile Include="wechatJS\OAuthUser.cs" />
+    <Compile Include="wechatJS\OAuth_Token.cs" />
+    <Compile Include="wechatJS\SiteSettings.cs" />
+    <Compile Include="wechatJS\WXOauth.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
