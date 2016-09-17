@@ -11,13 +11,13 @@
         <Label x:Name="label" Content="Storage account name:" HorizontalAlignment="Left" Margin="24,10,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="storageaccount" HorizontalAlignment="Left" Height="23" Margin="24,45,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="244" Grid.ColumnSpan="2"/>
         <Label x:Name="label_Copy" Content="Storage account key:" HorizontalAlignment="Left" Margin="24,78,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="storagesubkey" HorizontalAlignment="Left" Height="23" Margin="24,113,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="244" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="storagesubkey" HorizontalAlignment="Left" Height="23" Margin="24,113,0,0"  VerticalScrollBarVisibility="Auto" Text="TextBox" VerticalAlignment="Top" Width="244" Grid.ColumnSpan="2"/>
         <Label x:Name="label_Copy1" Content="LUIS account key:" HorizontalAlignment="Left" Margin="24,259,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="luissubkey" HorizontalAlignment="Left" Height="23" Margin="24,294,0,0" TextWrapping="Wrap" Text="b3369986-b55a-4f56-8755-97961e2b69bc" VerticalAlignment="Top" Width="244"/>
         <Button x:Name="save" Content="Save" HorizontalAlignment="Left" Margin="55,341,0,0" VerticalAlignment="Top" Width="75" Click="save_Click"/>
         <Button x:Name="cancel" Content="Cancel" HorizontalAlignment="Left" Margin="163,341,0,0" VerticalAlignment="Top" Width="75" Click="cancel_Click"/>
         <Label x:Name="label_Copy2" Content="Storage table name:" HorizontalAlignment="Left" Margin="24,150,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="endpointdomain" HorizontalAlignment="Left" Height="23" Margin="24,185,0,0" TextWrapping="Wrap" Text="bottable" VerticalAlignment="Top" Width="244"/>
+        <TextBox x:Name="endpointdomain" HorizontalAlignment="Left" Height="23" Margin="24,185,0,0"  VerticalScrollBarVisibility="Auto" Text="bottable" VerticalAlignment="Top" Width="244"/>
 
     </Grid>
 </Window>
