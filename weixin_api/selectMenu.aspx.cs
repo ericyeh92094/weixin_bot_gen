@@ -14,7 +14,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Net;
 
-namespace weixin_api
+namespace weixin_bot
 {
     public partial class selectMenu : System.Web.UI.Page
     {

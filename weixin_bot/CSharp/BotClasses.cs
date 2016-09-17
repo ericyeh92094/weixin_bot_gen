@@ -1,10 +1,52 @@
-﻿using System;
+﻿using Microsoft.WindowsAzure.Storage.Table;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace weixin_bot
 {
+
+    public class Intent : IComparable<Intent>
+    {
+        public string intent { get; set; }
+        public float score { get; set; }
+
+        int IComparable<Intent>.CompareTo(Intent other)
+        {
+            if (other.score > score)
+                return -1;
+            else if (other.score == score)
+                return 0;
+            else
+                return 1;
+        }
+    }
+
+    public class Entity
+    {
+        public string entity { get; set; }
+        public string type { get; set; }
+        public int startIndex { get; set; }
+        public int endIndex { get; set; }
+        public float score { get; set; }
+    }
+
+    public class LUISModel
+    {
+        public const int MAX_INTENT = 20;
+        public string query { get; set; }
+        public Intent[] intents { get; set; }
+        public Entity[] entities { get; set; }
+    }
+
+    public class KBDoc : TableEntity
+    {
+        public KBDoc() { }
+
+        public string Description { get; set; }
+        public string IconURL { get; set; }
+        public string URL { get; set; }
+    }
+
     public class DeepLink
     {
         public string name { get; set; }
@@ -81,5 +123,4 @@ namespace weixin_bot
     {
         public string name { get; set; }
     }
-
 }

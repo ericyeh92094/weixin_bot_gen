@@ -7,14 +7,13 @@ using System.Web.Security;
 using System.Xml;
 using System.Diagnostics;
 
-namespace weixin_bot
+namespace weixin_api
 {
     /// <summary>
-    /// interfaceHandler 的摘要说明
+    /// interfaceTest 的摘要说明
     /// </summary>
-    public class interfaceHandler : IHttpHandler
+    public class interfaceTest : IHttpHandler
     {
-        HttpResponse currentResponse;
         public void ProcessRequest(HttpContext param_context)
         {
 
@@ -27,8 +26,6 @@ namespace weixin_bot
                     Byte[] postBytes = new Byte[stream.Length];
                     stream.Read(postBytes, 0, (Int32)stream.Length);
                     postString = Encoding.UTF8.GetString(postBytes);
-
-                    currentResponse = HttpContext.Current.Response;
                     Handle(postString);
                 }
             }
@@ -43,14 +40,13 @@ namespace weixin_bot
         /// <summary>
         /// 处理信息并应答
         /// </summary>
-        private async void Handle(string postStr)
+        private void Handle(string postStr)
         {
             messageHelp help = new messageHelp();
-            string responseContent = await help.ReturnMessage(postStr);
+            string responseContent = help.ReturnMessage(postStr);
 
-            currentResponse.ContentEncoding = Encoding.UTF8;
-            currentResponse.Write(responseContent);
-
+            HttpContext.Current.Response.ContentEncoding = Encoding.UTF8;
+            HttpContext.Current.Response.Write(responseContent);
         }
 
         //成为开发者url测试，返回echoStr

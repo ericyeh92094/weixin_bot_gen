@@ -19,7 +19,7 @@
  
           <input id="barcodeText" type="text" maxlength="256"/>
           <a href="#" class="weui_btn weui_btn_primary" id="scanQRCode">点击扫条码</a>
-
+      </div>
       <div id="divWechat" class="easyui-dialog" style="width:550px;height:500px;padding:10px 20px">
 
         <div class="container">

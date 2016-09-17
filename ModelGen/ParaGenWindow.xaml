@@ -1,0 +1,30 @@
+﻿<Window x:Class="ModelGen.ParaGenWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ModelGen"
+        mc:Ignorable="d"
+        Title="Parameter Generator" Height="420" Width="620" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Loaded="Window_Loaded">
+    <Grid>
+        <ScrollViewer Height="198" VerticalAlignment="Bottom"  VerticalScrollBarVisibility="Visible" Margin="10,0,10,10">
+            <TextBox x:Name="ParametersBox" HorizontalAlignment="Left" Height="197" TextWrapping="Wrap" Text="" VerticalAlignment="Bottom" Width="572" RenderTransformOrigin="0.484,1.386"/>
+        </ScrollViewer>
+        <Label x:Name="label1" Content="Title:" HorizontalAlignment="Left" Margin="7,5,0,0" VerticalAlignment="Top" Width="84"/>
+        <Button x:Name="save" Content="Save..." HorizontalAlignment="Left" Margin="507,9,0,0" VerticalAlignment="Top" Width="75" Click="save_Click"/>
+        <Label x:Name="label2" Content="Main URL:" HorizontalAlignment="Left" Margin="7,36,0,0" VerticalAlignment="Top" Width="84"/>
+        <Label x:Name="label3" Content="Icon URL:" HorizontalAlignment="Left" Margin="7,68,0,0" VerticalAlignment="Top" Width="84"/>
+        <Label x:Name="label4" Content="Weixin Token:" HorizontalAlignment="Left" Margin="7,100,0,0" VerticalAlignment="Top" Width="84"/>
+        <TextBox x:Name="titletext" HorizontalAlignment="Left" Height="21" Margin="101,10,0,0" TextWrapping="Wrap" Text="WEIXIN Main Title" VerticalAlignment="Top" Width="219" />
+        <TextBox x:Name="mainurl" HorizontalAlignment="Left" Height="21" Margin="101,40,0,0" TextWrapping="Wrap" Text="WEIXIN Main URL" VerticalAlignment="Top" Width="219" />
+        <TextBox x:Name="iconurl" HorizontalAlignment="Left" Height="21" Margin="101,72,0,0" TextWrapping="Wrap" Text="WEIXIN Icon URL" VerticalAlignment="Top" Width="219"/>
+        <TextBox x:Name="weixintoken" HorizontalAlignment="Left" Height="21" Margin="101,104,0,0" TextWrapping="Wrap" Text="WEIXIN Token" VerticalAlignment="Top" Width="219" />
+        <Button x:Name="close" Content="Close" HorizontalAlignment="Left" Margin="507,36,0,0" VerticalAlignment="Top" Width="75" Click="close_Click"/>
+        <RadioButton x:Name="bingradioButton" GroupName ="searchoption" Content="Use Bing Search" HorizontalAlignment="Left" Margin="333,81,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="t123radioButton0" GroupName ="searchoption" Content="Use Tunling123" HorizontalAlignment="Left" Margin="333,56,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label5" Content="Key:" HorizontalAlignment="Left" Margin="325,99,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="apikey" HorizontalAlignment="Left" Height="22" Margin="361,103,0,0" VerticalScrollBarVisibility="Auto" Text="API key" VerticalAlignment="Top" Width="234" />
+        <Label x:Name="label6" Content="Default Message:" HorizontalAlignment="Left" Margin="7,135,0,0" VerticalAlignment="Top" Width="107"/>
+        <TextBox x:Name="defaultmsg" HorizontalAlignment="Left" Height="21" Margin="119,139,0,0" TextWrapping="Wrap" Text="WEIXIN Default Message" VerticalAlignment="Top" Width="476" />
+    </Grid>
+</Window>

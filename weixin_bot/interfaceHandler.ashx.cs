@@ -45,7 +45,7 @@ namespace weixin_bot
         /// </summary>
         private async void Handle(string postStr)
         {
-            messageHelp help = new messageHelp();
+            MessageHelp help = new MessageHelp();
             string responseContent = await help.ReturnMessage(postStr);
 
             currentResponse.ContentEncoding = Encoding.UTF8;
@@ -56,7 +56,7 @@ namespace weixin_bot
         //成为开发者url测试，返回echoStr
         public void InterfaceTest()
         {
-            string token = "myironmanaccess";
+            string token = BotParameters.WEIXIN_token;
             if (string.IsNullOrEmpty(token))
             {
                 return;

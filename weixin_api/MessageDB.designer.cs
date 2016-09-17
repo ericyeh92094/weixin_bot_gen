@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace weixin_api
+namespace weixin_bot
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;

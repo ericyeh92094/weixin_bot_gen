@@ -15,7 +15,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 using System.Text;
 using System.IO;
 
-namespace weixin_api
+namespace weixin_bot
 {
     public class Intent : IComparable<Intent>
     {

@@ -7,7 +7,7 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace weixin_api {
+namespace weixin_bot {
     
     
     public partial class selectMenu {

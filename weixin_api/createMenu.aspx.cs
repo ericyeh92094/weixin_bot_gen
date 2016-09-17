@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Runtime.Serialization.Json;
 
-namespace weixin_api
+namespace weixin_bot
 {
     public class GetAccessToken
     {

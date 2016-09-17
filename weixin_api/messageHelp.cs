@@ -9,7 +9,7 @@ using System.Xml.Linq;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace weixin_api
+namespace weixin_bot
 {
     /// <summary>
     /// 接受/发送消息帮助类
@@ -103,7 +103,7 @@ namespace weixin_api
 
                 }
 
-                LuisHelp cognitive = new weixin_api.LuisHelp();
+                LuisHelp cognitive = new weixin_bot.LuisHelp();
                 
                 CarCaringLUIS carLUIS = await LuisHelp.GetEntityFromLUIS(Content.InnerText);
                 if (carLUIS.intents.Count() > 0)
